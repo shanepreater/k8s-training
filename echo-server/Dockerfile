@@ -29,7 +29,7 @@ FROM base
 
 COPY --from=dependencies /usr/src/app/node_modules ./node_modules
 COPY . .
-ENV PORT 80
+ENV PORT 3000
 
 EXPOSE ${PORT}
 CMD npm run start
