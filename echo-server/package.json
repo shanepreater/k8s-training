@@ -1,0 +1,14 @@
+{
+  "name": "echo-server",
+  "version": "1.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no tests specified\"",
+    "lint": "echo \"Error: no linter specified\""
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "winston": "^3.3.3"
+  }
+}
