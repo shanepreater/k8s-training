@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "echoServer.fullname" . }}
+  labels:
+    {{- include "echoServer.labels" . | nindent 4 }}
+spec:
+  host: {{ include "echoServer.fullname" . }}-{{ .Release.Namespace }}.{{ .Values.route.subdomain }}
+  port:
+    targetPort: {{ .Values.service.portName }}
+  to:
+    kind: Service
+    name: {{ include "echoServer.fullname" . }}
+  tls:
+    termination: edge
