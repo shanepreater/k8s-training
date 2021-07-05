@@ -1,0 +1,73 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: training-<initials>-echo
+  labels:
+    app: training-<initials>-echo
+    app.kubernetes.io/component: training-<initials>-echo
+    app.kubernetes.io/instance: training-<initials>-echo
+    app.kubernetes.io/part-of: training-<initials>
+    app.openshift.io/runtime-namespace: erap-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: training-<initials>-echo
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: training-<initials>-echo
+        deploymentconfig: training-<initials>-echo
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+    spec:
+      containers:
+        - name: training-<initials>-echo
+          image: argodevops/echo-server:latest
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          imagePullPolicy: Always
+      restartPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: training-<initials>-echo
+  labels:
+    app: training-<initials>-echo
+    app.kubernetes.io/component: training-<initials>-echo
+    app.kubernetes.io/instance: training-<initials>-echo
+    app.kubernetes.io/part-of: training-<initials>
+    app.openshift.io/runtime-version: latest
+spec:
+  ports:
+    - name: 3000-tcp
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: training-<initials>-echo
+    deploymentconfig: training-<initials>-echo
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: training-<initials>-echo
+  labels:
+    app: training-<initials>-echo
+    app.kubernetes.io/component: training-<initials>-echo
+    app.kubernetes.io/instance: training-<initials>-echo
+    app.kubernetes.io/part-of: training-<initials>
+    app.openshift.io/runtime-version: latest
+spec:
+  host: training-<initials>-echo-erap-service.apps.os1.uksouth.gss.gov.uk
+  to:
+    kind: Service
+    name: training-<initials>-echo
+    weight: 100
+  port:
+    targetPort: 3000-tcp
+  tls:
+    termination: edge
